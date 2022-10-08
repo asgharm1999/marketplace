@@ -1,15 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[29]:
-
-
-get_ipython().system('pip install apify')
-
-
-# In[9]:
-
-
 import pandas as pd
 import numpy as np
 import datetime
@@ -20,10 +8,6 @@ import time
 import re
 import os
 import math
-
-
-# In[14]:
-
 
 base_url = "https://www.realsimple.com/home-organizing/decorating"
 
