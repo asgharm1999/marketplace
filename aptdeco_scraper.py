@@ -1,13 +1,14 @@
+# import numpy as np # - Library for numpy
 import pandas as pd
 import datetime
 from bs4 import BeautifulSoup
 import requests
-from urllib.request import urlopen
+# from urllib.request import urlopen # - Library to extract html
 
 
 def get_aptdeco_search_results(base_url):
     url = base_url + "1"
-    print("Scrape Page: 1")
+#   print("Scrape Page: 1")
 
 #   - To extract html file
 #   html = urlopen(url)
@@ -18,9 +19,7 @@ def get_aptdeco_search_results(base_url):
 
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
-    
-    pages = int(soup.find('button', {'class': 'DropdownMenu__DropdownButton-f6rgh0-3 jirxVq'}).find('div', {'class': 'DropdownMenu__DropdownButtonText-f6rgh0-4 cGOHFZ'}).text.split('of ')[1])
-    
+#   pages = int(soup.find('button', {'class': 'DropdownMenu__DropdownButton-f6rgh0-3 jirxVq'}).find('div', {'class': 'DropdownMenu__DropdownButtonText-f6rgh0-4 cGOHFZ'}).text.split('of ')[1])
     product_results = soup.find_all('div', {'class': 'styles__ProductGridCell-sc-1859r2o-0 bFDJTu'})
 
 #   - To print products html    
@@ -51,7 +50,7 @@ def get_aptdeco_search_results(base_url):
             
         products_info.append([product_url, new_price, location, title])
     
-    print("Finished")
+#   print("Finished")
     
     columns = ('Post URL', 'Price', 'Location', 'Post Title')
     df = pd.DataFrame(products_info, columns=columns)
@@ -59,7 +58,7 @@ def get_aptdeco_search_results(base_url):
 #   for page in range(2,pages+1): # - if you want to scrape all pages
     for page in range(2,6):
         url = base_url + str(page)
-        print("Scrape Page: " + str(page))
+#       print("Scrape Page: " + str(page))
         page = requests.get(url)
         soup = BeautifulSoup(page.content, "html.parser")
         
@@ -89,7 +88,7 @@ def get_aptdeco_search_results(base_url):
             
             df.loc[len(df)] = [product_url, new_price, location, title]
         
-        print("Finished")
+#       print("Finished")
         
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'AptDeco Results ({timestamp}).csv', index=False)
