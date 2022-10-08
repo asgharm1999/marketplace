@@ -1,27 +1,15 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-
-
-# In[2]:
 
 
 fout = open('Yellowpages.txt', 'wt',encoding='utf-8')
 fclean = open('Yellowpages.txt', 'wt')
 search_results = []
 
-
-# In[48]:
-
-
 page = 1
 titles = []
+
 while page < 6:
     url = f"https://www.yellowpages.com/search?search_terms=Furniture&geo_location_terms=Pittsburgh%2C+PA&page={page}"
     response=requests.get(url)
@@ -55,10 +43,3 @@ while page < 6:
 
 columns = ('Name', 'Phone', 'Street_Address','Locality','Business_years')
 df = pd.DataFrame(search_results, columns=columns)
-
-
-# In[ ]:
-
-
-
-
