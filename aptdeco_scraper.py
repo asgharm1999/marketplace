@@ -1,13 +1,7 @@
 import pandas as pd
-import numpy as np
 import datetime
 from bs4 import BeautifulSoup
-import urllib3
 import requests
-import time
-import re
-import os
-import math
 from urllib.request import urlopen
 
 base_url = "https://www.aptdeco.com/catalog/furniture?region=Northeast+%28NY%2C+NJ%2C+CT%2C+PA%2C+DE%29"
