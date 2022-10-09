@@ -36,7 +36,7 @@ def get_craigslist_search_results(base_url):
     # for i in total_pages:
         
         params = {
-            's': i * 120        
+            's': i * 120        # 120 items per page
         }
 
         response = requests.get(base_url, params=params)
