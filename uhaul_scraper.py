@@ -27,6 +27,9 @@ def get_uhaul_search_results(base_url, zip_code):
         
     store_info = []
     
+    if len(store_results) > 5:
+        store_results = store_results[:-1]
+    
     for store in store_results:
         name = store.find('h3', {'class': 'collapse-half medium-uncollapse'}).text
         if(store.find('small', {'class': 'text-semibold'})) != None:
