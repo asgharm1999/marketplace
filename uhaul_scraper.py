@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 # from urllib.request import urlopen # - Library to extract html
 
+
 def get_uhaul_search_results(base_url, zip_code):
 
     url = base_url + str(zip_code) + "/Results/"

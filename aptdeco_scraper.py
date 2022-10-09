@@ -48,11 +48,11 @@ def get_aptdeco_search_results(base_url):
             separator_location_index = location.index(':')+2
             location = location[separator_location_index:]
             
-        products_info.append([product_url, new_price, location, title])
+        products_info.append([product_url, title, new_price, location])
     
 #   print("Finished")
     
-    columns = ('Post URL', 'Price', 'Location', 'Post Title')
+    columns = ('Post URL', 'Post Title', 'Price', 'Location')
     df = pd.DataFrame(products_info, columns=columns)
    
 #   for page in range(2,pages+1): # - if you want to scrape all pages
@@ -86,7 +86,7 @@ def get_aptdeco_search_results(base_url):
                 separator_location_index = location.index(':')+2
                 location = location[separator_location_index:]
             
-            df.loc[len(df)] = [product_url, new_price, location, title]
+            df.loc[len(df)] = [product_url, title, new_price, location]
         
 #       print("Finished")
         
