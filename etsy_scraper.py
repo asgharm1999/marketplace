@@ -29,6 +29,3 @@ def get_etsy_search_results(base_url):
 
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'Etsy Results ({timestamp}).csv', index=False)
-
-    # fout.close()
-    # fclean.close()
