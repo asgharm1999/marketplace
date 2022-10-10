@@ -6,7 +6,7 @@ with open("SUMMARY.csv", 'w', encoding='utf-8') as output_file:
     writer = csv.writer(output_file)
 
     # create header
-    writer.writerow(['post_datetime', 'post_id', 'post_url', 'price', 'location', 'post_title', 'rating'])
+    writer.writerow(['post_url', 'price', 'location', 'post_title', 'source'])
     for filename in glob(f"{path}/*.csv"):
         with open(filename, 'r', encoding='utf-8') as input_file:
             value = "FAIL"
@@ -57,6 +57,3 @@ with open("SUMMARY.csv", 'w', encoding='utf-8') as output_file:
 
 
 # craigl.get_craigslist_search_results(craigslist_base_url)
-
-
-
