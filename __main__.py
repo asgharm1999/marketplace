@@ -18,25 +18,49 @@ import prompts as ps
 from apify_client import ApifyClient
 
 def furniture():
-    print('Search Furniture: ')
-    furniture = input()
+    print('FURNITURES'.center(50, '-'))
+    furniture = input("Search Furniture: ")
+    #show list of furniture based on the keyword
+    #show visualizations/provide options to various visualizations
+    is_movers = input("Do you want to find nearest movers? (y/n)")
+    if is_movers == 'y':
+        movers()
     
 def shops():
-    print('Enter Zipcode: ')
-    zipcode = input()
+    print('NEAREST SHOPS'.center(50, '-'))
+    zipcode = input("Enter Zipcode: ")
+    #show list of shops in the particular zipcode
     
 def movers():
-    print('Enter Zipcode: ')
-    zipcode = input()
+    print('NEAREST MOVERS'.center(50, '-'))
+    zipcode = input('Enter Zipcode: ')
+    #show list of shops in the particular zipcode
     
 def articles():
-    print('LIST OF ARTICLES')
+    print('ARTICLES'.center(50, '-'))
+    #show list of articles
     
-def create_master_csv(craigslist, dania, etsy, yellowpages, uhaul, aptdeco, realsimple={}):
-    print('')
-
-def get_cached_data(craigslist, dania, etsy, yellowpages, uhaul, aptdeco, realsimple):
-    print('')
+def browse():
+    print('MENU'.center(51, '-'))
+    print('1. Search Furniture')
+    print('2. Explore Nearest Shops')
+    print('3. Find Nearest Movers')
+    print('4. Browse Articles')
+    print('Press Esc to Exit')
+    
+    menu = input("Enter Menu: ")
+    if(menu == 1):
+        furniture()
+    elif(menu == 2):
+        shops()
+    elif(menu == 3):
+        movers()
+    elif(menu == 4):
+        articles()
+    else:
+        print("Wrong Input, Try Again!")
+        browse()
+    
 
 print("INTRO".center(50, '-'))
 print("Hello. It is recommended to use your terminal in fullscreen to view all the results.")
@@ -82,29 +106,6 @@ if is_cached != 'y':
 # use cached code
 else:
     cached.get_cached_data(craigslist, realsimple, dania, etsy, yellowpages, uhaul, aptdeco)
-
-play = True
-while play:
-    print('MENU'.center(51, '-'))
-    print('1. Search Furniture')
-    print('2. Explore Nearest Shops')
-    print('3. Find Nearest Movers')
-    print('4. Browse Articles')
-    print('5. Exit')
-    
-    menu = input()
-    if(menu == 1):
-        furniture()
-    elif(menu == 2):
-        shops()
-    elif(menu == 3):
-        movers()
-    elif(menu == 4):
-        articles()
-    elif(menu == 5):
-        play = False
-    else:
-        print("Wrong Input, Try Again!")
     
 exit = input()
 # if keyboard interrupt with exit, stop program
