@@ -27,6 +27,10 @@ def furniture():
         
 def visualizations():
     print("Visualizations")
+    minimum_price = input("Minimum Price: ")
+    maximum_price = input("Maximum Price: ")
+    minimum_rating = input("Minimum Rating: ")
+    #call the visualization
     
 def shops():
     print('NEAREST SHOPS'.center(50, '-'))
