@@ -11,6 +11,18 @@ import math
 from apify_client import ApifyClient
 
 def get_realsimple_search_results(base_url, token):
+    
+    def import_or_install(package):
+    try:
+        __import__(package)
+    except:
+        pip.main(['install', package])       
+
+    # Required for RealSimple
+    packages = ['apify', 'apify-client']
+    for p in packages:
+        import_or_install(p)
+        
     page = requests.get(base_url)
     data=[]
 
@@ -79,4 +91,4 @@ def get_realsimple_search_results(base_url, token):
     df1 = pd.DataFrame(list1)
     # print(df1)
     df1 = df1[['url','color','size','title','id','description','price','currency','product_type','images_urls','additional']]
-    df1.to_csv(f'RealSimple Results 2 ({timestamp}).csv', index=False)
+    df1.to_csv(f'Dania Results ({timestamp}).csv', index=False)
