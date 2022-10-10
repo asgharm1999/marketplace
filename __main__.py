@@ -94,6 +94,7 @@ else:
     df_uhaul = cached.get_cached_uhaul()
     df_realsimple = cached.get_cached_realsimple()
 
+df_furniture = df_craiglist.copy
 
 browse = True
 while browse:
