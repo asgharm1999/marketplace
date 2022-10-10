@@ -17,26 +17,30 @@ import get_cached_data as cached
 import prompts as ps
 from apify_client import ApifyClient
     
-def browse():
-    print('MENU'.center(51, '-'))
-    print('1. Search Furniture')
-    print('2. Explore Nearest Shops')
-    print('3. Find Nearest Movers')
-    print('4. Browse Articles')
-    print('Press Esc to Exit')
+def furniture():
+    print('FURNITURES'.center(50, '-'))
+    furniture = input("What furniture would you like to browse?")
+    #show list of furniture based on the keyword
+    is_movers = input("Do you want to find nearest movers? (y/n)")
+    if is_movers == 'y':
+        movers()
+        
+def visualizations():
+    print("Visualizations")
     
-    menu = input("Enter Menu: ")
-    if(menu == 1):
-        ps.furniture()
-    elif(menu == 2):
-        ps.shops()
-    elif(menu == 3):
-        ps.movers()
-    elif(menu == 4):
-        ps.articles()
-    else:
-        print("Wrong Input, Try Again!")
-        browse()
+def shops():
+    print('NEAREST SHOPS'.center(50, '-'))
+    zipcode = input("Enter Zipcode: ")
+    #show list of shops in the particular zipcode
+    
+def movers():
+    print('NEAREST MOVERS'.center(50, '-'))
+    zipcode = input('Enter Zipcode: ')
+    #show list of shops in the particular zipcode
+    
+def articles():
+    print('ARTICLES'.center(50, '-'))
+    #show list of articles
 
 print("INTRO".center(50, '-'))
 print("Hello. It is recommended to use your terminal in fullscreen to view all the results.")
@@ -71,18 +75,42 @@ if is_cached != 'y':
     # UHAUL
     uhaul_base_url = "https://www.uhaul.com/Locations/"
     uhaul = uh.get_uhaul_search_results(uhaul_base_url)
-    
-    realsimple = "To be defined"
 
     master.create_master_csv(craigslist, dania, etsy, aptdeco)
 
 # use cached code
 else:
-    cached.get_cached_data(craigslist, realsimple, dania, etsy, yellowpages, uhaul, aptdeco)
-    
-exit = input()
+    df_furniture = cached.get_cached_data()
+
+browse = True
+while browse:
+    print('MENU'.center(51, '-'))
+    print('1. Search Furniture')
+    print('2. View Visualizations')
+    print('3. Explore Nearest Shops')
+    print('4. Find Nearest Movers')
+    print('5. Browse Articles')
+    print('6. Exit')
+        
+    menu = input("Enter Menu: ")
+    if(menu == 1):
+        furniture()
+    elif(menu == 2):
+        visualizations()
+    elif(menu == 3):
+        shops()
+    elif(menu == 4):
+        movers()
+    elif(menu == 5):
+        articles()
+    elif(menu == 6):
+        browse = False
+    else:
+        print("Wrong Input, Try Again!")
+
+# exit = input()
 # if keyboard interrupt with exit, stop program
-if exit:
-    exit
-else:
-    ps.browse()
+# if exit:
+#    exit
+# else:
+#    browse()
