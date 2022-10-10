@@ -54,33 +54,42 @@ if is_cached != 'y':
 
     # CRAIGSLIST
     craigslist_base_url = "https://pittsburgh.craigslist.org/search/fua"
-    craigslist = craigl.get_craigslist_search_results(craigslist_base_url)
+    df_craigslist = craigl.get_craigslist_search_results(craigslist_base_url)
 
-    # REALSIMPLE & DANIA 
-    dania_base_url = "https://www.realsimple.com/home-organizing/decorating"
-    dania = real.get_realsimple_search_results(dania_base_url, dania_token)
+    # DANIA 
+    # dania_base_url = "https://www.realsimple.com/home-organizing/decorating"
+    df_dania = real.get_dania_search_results(dania_token)
 
     # ETSY
     etsy_base_url = "https://www.etsy.com/search?q=furniture&page={page}&ref=pagination"
-    etsy = etsy.get_etsy_search_results(etsy_base_url)
+    df_etsy = etsy.get_etsy_search_results(etsy_base_url)
 
     # APTDECO
     aptdeco_base_url = "https://www.aptdeco.com/catalog/furniture?region=Northeast+%28NY%2C+NJ%2C+CT%2C+PA%2C+DE%29&page="
-    aptdeco = aptd.get_aptdeco_search_results(aptdeco_base_url)
+    df_aptdeco = aptd.get_aptdeco_search_results(aptdeco_base_url)
 
     # YELLOWPAGES
     yellowpages_base_url = "https://www.yellowpages.com/search?search_terms=Furniture&geo_location_terms="
-    yellowpages = yp.get_yellowpages_search_results(yellowpages_base_url)
+    df_yellowpages = yp.get_yellowpages_search_results(yellowpages_base_url)
 
     # UHAUL
     uhaul_base_url = "https://www.uhaul.com/Locations/"
-    uhaul = uh.get_uhaul_search_results(uhaul_base_url)
-
-    master.create_master_csv(craigslist, dania, etsy, aptdeco)
+    df_uhaul = uh.get_uhaul_search_results(uhaul_base_url)
+    
+    # REALSIMPLE
+    realsimple_base_url = "https://www.realsimple.com/home-organizing/decorating"
+    df_realsimple = real.get_realsimple_search_results(realsimple_base_url)
 
 # use cached code
 else:
-    df_furniture = cached.get_cached_data()
+    df_craiglist = cached.get_cached_craiglist()
+    df_dania = cached.get_cached_dania()
+    df_etsy = cached.get_cached_etsy()
+    df_aptdeco = cached.get_cached_aptdeco()
+    df_yellowpages = cached.get_cached_yellowpages()
+    df_uhaul = cached.get_cached_uhaul()
+    df_realsimple = cached.get_cached_realsimple()
+
 
 browse = True
 while browse:
