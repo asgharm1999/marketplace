@@ -16,29 +16,6 @@ import create_master_csv as master
 import get_cached_data as cached
 import prompts as ps
 from apify_client import ApifyClient
-
-def furniture():
-    print('FURNITURES'.center(50, '-'))
-    furniture = input("Search Furniture: ")
-    #show list of furniture based on the keyword
-    #show visualizations/provide options to various visualizations
-    is_movers = input("Do you want to find nearest movers? (y/n)")
-    if is_movers == 'y':
-        movers()
-    
-def shops():
-    print('NEAREST SHOPS'.center(50, '-'))
-    zipcode = input("Enter Zipcode: ")
-    #show list of shops in the particular zipcode
-    
-def movers():
-    print('NEAREST MOVERS'.center(50, '-'))
-    zipcode = input('Enter Zipcode: ')
-    #show list of shops in the particular zipcode
-    
-def articles():
-    print('ARTICLES'.center(50, '-'))
-    #show list of articles
     
 def browse():
     print('MENU'.center(51, '-'))
@@ -50,23 +27,22 @@ def browse():
     
     menu = input("Enter Menu: ")
     if(menu == 1):
-        furniture()
+        ps.furniture()
     elif(menu == 2):
-        shops()
+        ps.shops()
     elif(menu == 3):
-        movers()
+        ps.movers()
     elif(menu == 4):
-        articles()
+        ps.articles()
     else:
         print("Wrong Input, Try Again!")
         browse()
-    
 
 print("INTRO".center(50, '-'))
 print("Hello. It is recommended to use your terminal in fullscreen to view all the results.")
 print("SETUP".center(50, '-'))
-print("Please enter your RealSimple API token. View the Readme for instructions.")
-realsimple_token = input()
+print("Please enter your Dania API token. View the Readme for instructions.")
+dania_token = input()
 is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip() == 'y'
 
 if is_cached != 'y':
@@ -77,8 +53,8 @@ if is_cached != 'y':
     craigslist = craigl.get_craigslist_search_results(craigslist_base_url)
 
     # REALSIMPLE & DANIA 
-    realsimple_base_url = "https://www.realsimple.com/home-organizing/decorating"
-    realsimple = real.get_realsimple_search_results(realsimple_base_url, realsimple_token)
+    dania_base_url = "https://www.realsimple.com/home-organizing/decorating"
+    dania = real.get_realsimple_search_results(dania_base_url, dania_token)
 
     # ETSY
     etsy_base_url = "https://www.etsy.com/search?q=furniture&page={page}&ref=pagination"
@@ -96,12 +72,9 @@ if is_cached != 'y':
     uhaul_base_url = "https://www.uhaul.com/Locations/"
     uhaul = uh.get_uhaul_search_results(uhaul_base_url)
     
-    dania = "To be defined"
+    realsimple = "To be defined"
 
-    if realsimple_token.len > 1:
-        master.create_master_csv(craigslist, dania, etsy, yellowpages, uhaul, aptdeco, realsimple)
-    else: 
-        master.create_master_csv(craigslist, dania, etsy, yellowpages, uhaul, aptdeco)
+    master.create_master_csv(craigslist, dania, etsy, aptdeco)
 
 # use cached code
 else:
