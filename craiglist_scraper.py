@@ -70,6 +70,8 @@ def get_craigslist_search_results(base_url):
 
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'Craigslist Results ({timestamp}).csv', index=False)
+    
+    return df
 
 
 # furniture_elems = results.find_all('li', class_="result-row")
