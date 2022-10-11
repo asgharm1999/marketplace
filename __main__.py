@@ -24,11 +24,11 @@ import aptdeco_scraper as aptd
 import uhaul_scraper as uh
 import craiglist_scraper as craigl
 import dania_scraper as dania
-import realsimple_dania_scraper as real
+import realsimple_scraper as real
 import etsy_scraper as etsy
 import yellowpages_scraper as yp
-import create_master_csv as master
 import get_cached_data as cached
+import DFP_map_visualization as mapvi
 import re
 
 # FUNCTIONS
@@ -81,40 +81,40 @@ def furniture():
         movers()
         
 def create_master(df1, df2, df3, df4, df5):
-    # columns = ('Post URL', 'Post Title', 'Price', 'Location', 'Source')
-    # df = pd.DataFrame(columns=columns)
-    # print(df)
+    columns = ('Post URL', 'Post Title', 'Price', 'Location', 'Source')
+    df = pd.DataFrame(columns=columns)
+
+    df_c = df1
+    df1 = df_c[['Post URL', 'Post Title', 'Price', 'Location']]
+    df1['Source'] = 'craigslist'
+    df1.columns=df.columns
     
-    # df1['Source'] = 'craigslist'
-    # df1 = df1.loc[:,['Post URL', 'Post Title', 'Price', 'Location', 'Source']].copy()
-    # print(df1)
-    # df2['location'] = 'NA'
-    # df2['source'] = 'dania'
-    # df2 = df2.loc[:,['url', 'title', 'price', 'location', 'source']].copy()
-    # print(df2)
-    # df3['Location'] = 'NA'
-    # df3['Post URL'] = 'NA'
-    # df3['Source'] = 'etsy'
-    # df3 = df3.loc[:,['Post URL', 'Title', 'Price', 'Location', 'Source']].copy()
-    # print(df3)
-    # df4['Source'] = 'aptdeco'
-    # print(df4)
-    # df5 = df5.loc[:,['post_url', 'post_title', 'price', 'location', 'source']].copy()
+    df_d = df2
+    df_d['Location']='NA'    
+    df2 = df_d[['url', 'title', 'price', 'Location']]
+    df2['Source'] = 'Dania'
+    df2.columns=df.columns
     
-    # for index, row in df1.iterrows():
-    #     df.loc[len(df)] = row
-    # for index, row in df2.iterrows():
-    #     df.loc[len(df)] = row
-    # for index, row in df3.iterrows():
-    #     df.loc[len(df)] = row
-    # for index, row in df4.iterrows():
-    #     df.loc[len(df)] = row
-    # for index, row in df5.iterrows():
-    #     df.loc[len(df)] = row
+    df_e = df3
+    df_e['Location']='NA'    
+    df_e['Post URL']='NA'    
+    df3 = df_e[['Post URL', 'Title', 'Price', 'Location']]
+    df3['Source'] = 'Etsy'
+    df3.columns=df.columns
     
-    # df = pd.concat([df1, df2, df3, df4, df5], axis=0, ignore_index=True)
     
-    return df4
+    df_a = df4
+    df4 = df_a[['Post URL', 'Post Title', 'Price', 'Location']]
+    df4['Source'] = 'Etsy'
+    df4.columns=df.columns
+    
+    df_i= df5
+    df5 = df_i[['post_url', 'post_title', 'price', 'location','source']]
+    df5.columns=df.columns
+    
+    df = pd.concat([df1, df2, df3, df4, df5], axis=0)
+    
+    return df
         
 # Prints visualizations        
 def visualizations():
@@ -133,6 +133,7 @@ def shops():
             print("No nearby movers!")
         else:
             print(tabulate(df_yellowpages, headers = 'keys', tablefmt = 'simple', showindex=False))
+            mapvi.map_visualization(df_yellowpages)
     else:
         df_yellowpages = cached.get_data_yellowpages()
         columns = ('Store URL', 'Name', 'Phone', 'Street_Address', 'Locality', 'Business_years')
@@ -143,7 +144,7 @@ def shops():
         if search_results.empty:
             print("No nearby shops!")
         else:
-            print(tabulate(search_results, headers = 'keys', tablefmt = 'simple', showindex=False))
+            mapvi.map_visualization(search_results)
     # redirect to map
     
 # Fetches movers from UHaul     
@@ -187,9 +188,6 @@ def articles():
 # MAIN MENU
 print("INTRO".center(50, '-'))
 print("Hello. It is recommended to use your terminal in fullscreen to view all the results.")
-print("SETUP".center(50, '-'))
-print("Please enter your Dania API token. View the Readme for instructions.")
-dania_token = input()
 
 df_furnitures = pd.DataFrame()
 df_craigslist = pd.DataFrame()

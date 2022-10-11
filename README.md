@@ -31,4 +31,7 @@ Run `python3 __main__.py`.
 Everything is interfaced via the command line with simple prompts.
 <br/>
 
+If you are using a Mac the visualizations do not open automatically for some reason, but the .html file should be generated in your directory. On Windows, this is not an issue.
+<br/>
+
 You can now enter a product you are interested in purchasing (e.g. couches, tables, chairs, etc.) and results will be displayed. 
