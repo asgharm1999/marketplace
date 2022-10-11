@@ -1,12 +1,39 @@
 import csv
 import os
+import pandas as pd
 from glob import glob
+from datetime import datetime
 import pathlib
 from posixpath import abspath
 import pandas as pd
 from turtle import numinput
-from re import search
+import re
 
+
+def get_data_aptdeco():    
+    files = os.listdir()
+    print(files)
+    files_list = []
+    pat1 = r'^AptDeco Results'
+    for file in files:
+        if re.search(pat1, file) != None:
+            files_list.append(file)
+    print(files_list)
+    max = files_list[0]
+    datetime.strptime(files_list[0][17:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[17:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[17:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    print(max)
+    
+    df = pd.read_csv(max)
+    
+    print(df)
+    
+    return df
+    
+
+get_data_aptdeco()
 
 def get_data():
     path = f"{pathlib.Path().resolve()}/SUMMARY.csv"
