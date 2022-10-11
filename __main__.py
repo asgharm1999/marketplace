@@ -1,3 +1,8 @@
+import installation_packages as ip
+packages = ['geopy', 'folium', 'apify', 'apify-client']
+for p in packages:
+    ip.import_or_install(p)
+
 import pandas as pd
 import numpy as np
 import os
