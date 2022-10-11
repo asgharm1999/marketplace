@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 import requests
 # from urllib.request import urlopen # - Library to extract html
 
-
+# Fetch search results from UHaul
 def get_uhaul_search_results(base_url, zip_code):
 
     url = base_url + str(zip_code) + "/Results/"
@@ -38,6 +38,7 @@ def get_uhaul_search_results(base_url, zip_code):
     if len(store_results) > 5:
         store_results = store_results[:-1]
     
+    # Gets stores
     for store in store_results:
         name = store.find('h3', {'class': 'collapse-half medium-uncollapse'}).text
         if(store.find('small', {'class': 'text-semibold'})) != None:

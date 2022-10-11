@@ -17,6 +17,7 @@ import re
 import os
 import math
 
+# Fetch search results from Craigslist
 def get_craigslist_search_results(base_url):
     page = requests.get(base_url)
 
@@ -76,6 +77,7 @@ def get_craigslist_search_results(base_url):
 
     # print(df)
 
+    # Save to CSV
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'Craigslist Results ({timestamp}).csv', index=False)
     

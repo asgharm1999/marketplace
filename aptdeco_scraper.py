@@ -14,6 +14,7 @@ import requests
 # from urllib.request import urlopen # - Library to extract html
 
 
+# Fetch search results from AptDeco
 def get_aptdeco_search_results(base_url):
     url = base_url + "1"
 #   print("Scrape Page: 1")
@@ -74,6 +75,7 @@ def get_aptdeco_search_results(base_url):
         
         products_info = []
     
+        # Gather all products 
         for product in product_results:
             title = product.find('div', {'class': 'Card__ItemName-rr6223-2 hKSDjR'}).text
             product_url = 'https://www.aptdeco.com' + product.find('a', {'class': 'Card__CardLink-rr6223-1 gfTIJo'})['href']
@@ -98,6 +100,7 @@ def get_aptdeco_search_results(base_url):
         
 #       print("Finished")
         
+    # Saves to CSV    
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'AptDeco Results ({timestamp}).csv', index=False)
         

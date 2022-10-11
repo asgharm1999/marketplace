@@ -11,7 +11,7 @@ import requests
 import pandas as pd
 import datetime
 
-
+# Fetch search results from YellowPages
 def get_yellowpages_search_results(base_url, location):
 
 #   fout = open('Yellowpages.txt', 'wt',encoding='utf-8')
@@ -71,6 +71,7 @@ def get_yellowpages_search_results(base_url, location):
     columns = ('Store URL', 'Name', 'Phone', 'Street_Address','Locality','Business_years')
     df = pd.DataFrame(search_results, columns=columns)
     
+    # Save to CSV
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'Yellowpages Results ({timestamp}).csv', index=False)
     

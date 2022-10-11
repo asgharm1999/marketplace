@@ -11,7 +11,7 @@ import pandas as pd
 from datetime import datetime
 import re
 
-
+# Get Craigslist
 def get_data_craigslist():
     files = os.listdir()
     #print(files)
@@ -31,6 +31,7 @@ def get_data_craigslist():
     #print(df)
     return df
 
+# Get Dania
 def get_data_dania():
     files = os.listdir()
     files_list = []
@@ -46,6 +47,7 @@ def get_data_dania():
     df = pd.read_csv(max)
     return df
 
+# Get Etsy
 def get_data_etsy():
     files = os.listdir()
     files_list = []
@@ -61,6 +63,7 @@ def get_data_etsy():
     df = pd.read_csv(max)
     return df
 
+# Get AptDeco
 def get_data_aptdeco():    
     files = os.listdir()
     files_list = []
@@ -76,6 +79,7 @@ def get_data_aptdeco():
     df = pd.read_csv(max)
     return df
 
+# Get YellowPages
 def get_data_yellowpages():    
     files = os.listdir()
     files_list = []
@@ -91,6 +95,7 @@ def get_data_yellowpages():
     df = pd.read_csv(max)
     return df
 
+# Get UHaul
 def get_data_uhaul():
     files = os.listdir()
     files_list = []
@@ -106,6 +111,7 @@ def get_data_uhaul():
     df = pd.read_csv(max)
     return df
 
+# Get RealSimple
 def get_data_realsimple():
     files = os.listdir()
     files_list = []
@@ -121,6 +127,7 @@ def get_data_realsimple():
     df = pd.read_csv(max)
     return df
 
+# Get Ikea
 def get_data_ikea():
     files = os.listdir()
     files_list = []
