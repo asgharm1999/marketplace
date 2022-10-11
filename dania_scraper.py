@@ -19,8 +19,10 @@ import math
 from apify_client import ApifyClient
 
 # Fetch search results from Dania. This requires a token since this is our API source
-def get_dania_search_results(token):
+def get_dania_search_results():
         
+    token = "apify_api_Q8Nb6XkPh9ZdZnhkYCZL7BgKB5ZZF531g2xb"
+    
     # Initialize the ApifyClient with your API token
     client = ApifyClient(token)
 
