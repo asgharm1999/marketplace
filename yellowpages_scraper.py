@@ -1,9 +1,17 @@
+"""
+Authors:
+Muhammad Asghar masghar@andrew.cmu.edu 
+Edvin Handoko ehandoko@andrew.cmu.edu 
+Sahithya Senthilkumar sahithys@andrew.cmu.edu 
+Saba Zaheer szaheer@andrew.cmu.edu
+"""
+
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import datetime
 
-
+# Fetch search results from YellowPages
 def get_yellowpages_search_results(base_url, location):
 
 #   fout = open('Yellowpages.txt', 'wt',encoding='utf-8')
@@ -52,9 +60,9 @@ def get_yellowpages_search_results(base_url, location):
 #               fclean.write(business_years)
                 search_results.append([post_url, name, phone, street_Address, locality, business_years])
             except: 
-                    #raise e 
-                    #b=0
-                    print("Failed to Add New Data")
+                # raise e 
+                b=0
+                # print("Failed to Add New Data")
         page = page+1
     
 #   fout.close()
@@ -63,6 +71,7 @@ def get_yellowpages_search_results(base_url, location):
     columns = ('Store URL', 'Name', 'Phone', 'Street_Address','Locality','Business_years')
     df = pd.DataFrame(search_results, columns=columns)
     
+    # Save to CSV
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'Yellowpages Results ({timestamp}).csv', index=False)
     

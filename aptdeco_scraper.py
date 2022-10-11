@@ -1,3 +1,11 @@
+"""
+Authors:
+Muhammad Asghar masghar@andrew.cmu.edu 
+Edvin Handoko ehandoko@andrew.cmu.edu 
+Sahithya Senthilkumar sahithys@andrew.cmu.edu 
+Saba Zaheer szaheer@andrew.cmu.edu
+"""
+
 # import numpy as np # - Library for numpy
 import pandas as pd
 import datetime
@@ -6,6 +14,7 @@ import requests
 # from urllib.request import urlopen # - Library to extract html
 
 
+# Fetch search results from AptDeco
 def get_aptdeco_search_results(base_url):
     url = base_url + "1"
 #   print("Scrape Page: 1")
@@ -56,7 +65,7 @@ def get_aptdeco_search_results(base_url):
     df = pd.DataFrame(products_info, columns=columns)
    
 #   for page in range(2,pages+1): # - if you want to scrape all pages
-    for page in range(2,6):
+    for page in range(2,4):
         url = base_url + str(page)
 #       print("Scrape Page: " + str(page))
         page = requests.get(url)
@@ -66,6 +75,7 @@ def get_aptdeco_search_results(base_url):
         
         products_info = []
     
+        # Gather all products 
         for product in product_results:
             title = product.find('div', {'class': 'Card__ItemName-rr6223-2 hKSDjR'}).text
             product_url = 'https://www.aptdeco.com' + product.find('a', {'class': 'Card__CardLink-rr6223-1 gfTIJo'})['href']
@@ -73,7 +83,7 @@ def get_aptdeco_search_results(base_url):
             separator_new_index = new_price.index('•')-1
             if product.find('s', {'class': 'Card__StrikeThrough-rr6223-3 iwsrff'}) != None:
                 new_price_index = new_price.index('$',1)
-                new_price = new_price[new_price_index:separator_new_index]
+                new_price = new_price[new_price_index+1:separator_new_index]
             else:
                 separator_new_index = new_price.index('•')-1
                 new_price = new_price[:separator_new_index]
@@ -90,6 +100,7 @@ def get_aptdeco_search_results(base_url):
         
 #       print("Finished")
         
+    # Saves to CSV    
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'AptDeco Results ({timestamp}).csv', index=False)
         

@@ -1,45 +1,147 @@
-import csv
+"""
+Authors:
+Muhammad Asghar masghar@andrew.cmu.edu 
+Edvin Handoko ehandoko@andrew.cmu.edu 
+Sahithya Senthilkumar sahithys@andrew.cmu.edu 
+Saba Zaheer szaheer@andrew.cmu.edu
+"""
+
 import os
-from glob import glob
-import pathlib
-from posixpath import abspath
 import pandas as pd
-from turtle import numinput
-from re import search
+from datetime import datetime
+import re
 
+# Get Craigslist
+def get_data_craigslist():
+    files = os.listdir()
+    #print(files)
+    files_list = []
+    pat = r'^Craigslist Results'
+    for file in files:
+        if re.search(pat, file) != None:
+            files_list.append(file)
+    #print(files_list)
+    max = files_list[0]
+    datetime.strptime(files_list[0][20:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[20:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[20:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    #print(max)
+    df = pd.read_csv(max)
+    #print(df)
+    return df
 
-def get_data():
-    path = f"{pathlib.Path().resolve()}/SUMMARY.csv"
-    fieldnames = ['post_url', 'price', 'location', 'post_title', 'source']
+# Get Dania
+def get_data_dania():
+    files = os.listdir()
+    files_list = []
+    pat = r'^Dania Results'
+    for file in files:
+        if re.search(pat, file) != None:
+            files_list.append(file)
+    max = files_list[0]
+    datetime.strptime(files_list[0][15:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[15:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[15:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    df = pd.read_csv(max)
+    return df
 
-    d = {os.path.splitext(os.path.basename(f))[0] : pd.read_csv(f) for f in glob(path)} 
+# Get Etsy
+def get_data_etsy():
+    files = os.listdir()
+    files_list = []
+    pat = r'^Etsy Results'
+    for file in files:
+        if re.search(pat, file) != None:
+            files_list.append(file)
+    max = files_list[0]
+    datetime.strptime(files_list[0][14:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[14:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[14:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    df = pd.read_csv(max)
+    return df
 
-    print(d)
+# Get AptDeco
+def get_data_aptdeco():    
+    files = os.listdir()
+    files_list = []
+    pat1 = r'^AptDeco Results'
+    for file in files:
+        if re.search(pat1, file) != None:
+            files_list.append(file)
+    max = files_list[0]
+    datetime.strptime(files_list[0][17:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[17:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[17:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    df = pd.read_csv(max)
+    return df
 
+# Get YellowPages
+def get_data_yellowpages():    
+    files = os.listdir()
+    files_list = []
+    pat1 = r'^Yellowpages Results'
+    for file in files:
+        if re.search(pat1, file) != None:
+            files_list.append(file)
+    max = files_list[0]
+    datetime.strptime(files_list[0][21:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[21:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[21:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    df = pd.read_csv(max)
+    return df
 
+# Get UHaul
+def get_data_uhaul():
+    files = os.listdir()
+    files_list = []
+    pat1 = r'^Uhaul Results'
+    for file in files:
+        if re.search(pat1, file) != None:
+            files_list.append(file)
+    max = files_list[0]
+    datetime.strptime(files_list[0][15:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[15:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[15:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    df = pd.read_csv(max)
+    return df
 
+# Get RealSimple
+def get_data_realsimple():
+    files = os.listdir()
+    files_list = []
+    pat1 = r'^RealSimple Results'
+    for file in files:
+        if re.search(pat1, file) != None:
+            files_list.append(file)
+    max = files_list[0]
+    datetime.strptime(files_list[0][22:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[22:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[22:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    df = pd.read_csv(max)
+    return df
 
-
-    # # CRAIGSLIST
-    # craigslist_base_url = "https://pittsburgh.craigslist.org/search/fua"
-    # craigl.get_craigslist_search_results(craigslist_base_url)
-
-    # # REALSIMPLE & DANIA 
-    # realsimple_base_url = "https://www.realsimple.com/home-organizing/decorating"
-    # real.get_realsimple_search_results(realsimple_base_url, realsimple_token)
-
-    # # ETSY
-    # etsy_base_url = "https://www.etsy.com/search?q=furniture&page={page}&ref=pagination"
-    # etsy.get_etsy_search_results(etsy_base_url)
-
-    # # APTDECO
-    # aptdeco_base_url = 
-    # aptd.get_aptdeco_search_results(aptdeco_base_url)
-
-    # # YELLOWPAGES
-    # yellowpages_base_url = 
-    # yp.get_yellowpages_search_results(yellowpages_base_url)
-
-    # # UHAUL
-    # uhaul_base_url = 
-    # uh.get_uhaul_search_results(uhaul_base_url)
+# Get Ikea
+def get_data_ikea():
+    files = os.listdir()
+    files_list = []
+    pat1 = r'^IKEA Results'
+    for file in files:
+        if re.search(pat1, file) != None:
+            files_list.append(file)
+    max = files_list[0]
+    datetime.strptime(files_list[0][14:-5], '%m_%d_%y %H%M%S')
+    for file in files_list:
+        if (datetime.strptime(max[14:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[14:-5], '%m_%d_%y %H%M%S')):
+            max = file
+    df = pd.read_csv(max)
+    return df
+    
+if __name__ == '__main__':
+    get_data_ikea()

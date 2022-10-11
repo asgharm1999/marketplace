@@ -1,3 +1,11 @@
+"""
+Authors:
+Muhammad Asghar masghar@andrew.cmu.edu 
+Edvin Handoko ehandoko@andrew.cmu.edu 
+Sahithya Senthilkumar sahithys@andrew.cmu.edu 
+Saba Zaheer szaheer@andrew.cmu.edu
+"""
+
 import pandas as pd
 import numpy as np
 import datetime
@@ -8,10 +16,10 @@ import time
 import re
 import os
 import math
-from apify_client import ApifyClient
 import pip
 
-def get_realsimple_search_results(base_url, token):
+# Fetch search results from RealSimple
+def get_realsimple_search_results(base_url):
         
     page = requests.get(base_url)
     data=[]
@@ -47,9 +55,9 @@ def get_realsimple_search_results(base_url, token):
         data.append(details)
         # count = count + 1
     
-
     df = pd.DataFrame (data, columns = ['Category','Link','Title','Image_Link'])
     # print(df)
 
+    # Save to CSV
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'RealSimple Results ({timestamp}).csv', index=False)

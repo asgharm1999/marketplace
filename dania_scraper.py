@@ -1,3 +1,11 @@
+"""
+Authors:
+Muhammad Asghar masghar@andrew.cmu.edu 
+Edvin Handoko ehandoko@andrew.cmu.edu 
+Sahithya Senthilkumar sahithys@andrew.cmu.edu 
+Saba Zaheer szaheer@andrew.cmu.edu
+"""
+
 import pandas as pd
 import numpy as np
 import datetime
@@ -9,22 +17,13 @@ import re
 import os
 import math
 from apify_client import ApifyClient
-import pip
 
-def get_dania_search_results(token):
-    
-    def import_or_install(package):
-        try:
-            __import__(package)
-        except:
-            pip.main(['install', package])       
-
-    # Required for RealSimple
-    packages = ['apify', 'apify-client']
-    for p in packages:
-        import_or_install(p)
+# Fetch search results from Dania. This requires a token since this is our API source
+def get_dania_search_results():
         
-      # Initialize the ApifyClient with your API token
+    token = "apify_api_Q8Nb6XkPh9ZdZnhkYCZL7BgKB5ZZF531g2xb"
+    
+    # Initialize the ApifyClient with your API token
     client = ApifyClient(token)
 
     # Prepare the actor input
