@@ -132,7 +132,6 @@ def shops():
         if df_yellowpages.empty:
             print("No nearby movers!")
         else:
-            print(tabulate(df_yellowpages, headers = 'keys', tablefmt = 'simple', showindex=False))
             mapvi.map_visualization(df_yellowpages)
     else:
         df_yellowpages = cached.get_data_yellowpages()
