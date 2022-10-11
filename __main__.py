@@ -15,12 +15,11 @@ import glob
 import aptdeco_scraper as aptd
 import uhaul_scraper as uh
 import craiglist_scraper as craigl
-import realsimple_scraper as real
-import dania_scraper as dania
+import realsimple_dania_scraper as real
 import etsy_scraper as etsy
 import yellowpages_scraper as yp
+import create_master_csv as master
 import get_cached_data as cached
-
 
 # FUNCTIONS
 def furniture():
@@ -102,10 +101,6 @@ def create_df_furnitures(df1, df2, df3, df4, df5):
         
 def visualizations():
     print("Visualizations")
-    minimum_price = input("Minimum Price: ")
-    maximum_price = input("Maximum Price: ")
-    minimum_rating = input("Minimum Rating: ")
-    #call the visualization
     
 def shops():
     print('NEAREST SHOPS'.center(50, '-'))

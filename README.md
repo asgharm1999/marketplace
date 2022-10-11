@@ -20,6 +20,8 @@ Pre-scraped CSV results are provided. You will be prompted if you want to use th
 ## HOW TO RUN: 
 <br/>
 
+You will have to pip install the following packages. `folium`, `geopy`, `apify`, `apify-client`.
+
 Download or clone the marketplace repo. In terminal or command line, navigate to the root directory of marketplace folder.
 <br/>
 
