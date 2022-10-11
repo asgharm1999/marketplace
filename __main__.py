@@ -15,6 +15,7 @@ import glob
 import aptdeco_scraper as aptd
 import uhaul_scraper as uh
 import craiglist_scraper as craigl
+import dania_scraper as dania
 import realsimple_dania_scraper as real
 import etsy_scraper as etsy
 import yellowpages_scraper as yp
