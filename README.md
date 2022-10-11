@@ -8,7 +8,7 @@
 ##### Saba Zaheer szaheer@andrew.cmu.edu
 <br/>
 
-We provided scrapped data from the following websites AptDeco, Craigslist, RealSimple, Etsy, and YellowPages with recommendations based on location, price, and size. You can also provide a zipcode to get quotes on shipping costs via UHaul. 
+We provided scrapped data from the following websites AptDeco, Craigslist, RealSimple, Etsy, and YellowPages with recommendations based on location and price. You can also provide a zipcode to get the nearest UHaul locations.
 <br/>
 
 Users can view both new and second hand furniture and compare. Links will be provided if you chose to purchase. 
