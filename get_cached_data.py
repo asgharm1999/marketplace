@@ -5,8 +5,21 @@ import pathlib
 from posixpath import abspath
 import pandas as pd
 from turtle import numinput
-from re import search
+import re
 
+
+def get_data_aptdeco():    
+    files = os.listdir()
+    print(files)
+    files_list = []
+    pat = r'^AptDeco Results'
+    for file in files:
+        if re.search(pat, file) != None:
+            files_list.append(file)
+    print(files_list)
+    
+
+get_data_aptdeco()
 
 def get_data():
     path = f"{pathlib.Path().resolve()}/SUMMARY.csv"
