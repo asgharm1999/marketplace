@@ -73,7 +73,7 @@ def get_aptdeco_search_results(base_url):
             separator_new_index = new_price.index('•')-1
             if product.find('s', {'class': 'Card__StrikeThrough-rr6223-3 iwsrff'}) != None:
                 new_price_index = new_price.index('$',1)
-                new_price = new_price[new_price_index:separator_new_index]
+                new_price = new_price[new_price_index+1:separator_new_index]
             else:
                 separator_new_index = new_price.index('•')-1
                 new_price = new_price[:separator_new_index]

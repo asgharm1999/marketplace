@@ -1,9 +1,10 @@
-import installation_packages as ip
-packages = ['geopy', 'folium', 'apify', 'apify-client']
-for p in packages:
-    ip.import_or_install(p)
+#import installation_packages as ip
+#packages = ['geopy', 'folium', 'apify', 'apify-client']
+#for p in packages:
+#    ip.import_or_install(p)
 
 import pandas as pd
+from tabulate import tabulate
 import numpy as np
 import os
 import pip
@@ -19,15 +20,85 @@ import dania_scraper as dania
 import etsy_scraper as etsy
 import yellowpages_scraper as yp
 import get_cached_data as cached
-import install_packages as ip
-    
+
+
+# FUNCTIONS
 def furniture():
     print('FURNITURES'.center(50, '-'))
-    furniture = input("What furniture would you like to browse?")
+    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
+    if is_cached != 'y':
+        print("Gathering data, this will take some time.")
+
+        # CRAIGSLIST
+        craigslist_base_url = "https://pittsburgh.craigslist.org/search/fua"
+        df_craigslist = craigl.get_craigslist_search_results(craigslist_base_url)
+
+        # DANIA
+        df_dania = dania.get_dania_search_results(dania_token)
+
+        # ETSY
+        etsy_base_url = "https://www.etsy.com/search?q=furniture&page={page}&ref=pagination"
+        df_etsy = etsy.get_etsy_search_results(etsy_base_url)
+
+        # APTDECO
+        aptdeco_base_url = "https://www.aptdeco.com/catalog/furniture?region=Northeast+%28NY%2C+NJ%2C+CT%2C+PA%2C+DE%29&page="
+        df_aptdeco = aptd.get_aptdeco_search_results(aptdeco_base_url)
+        
+        # IKEA
+        df_ikea = cached.get_cached_ikea()
+        
+    else:
+        df_craigslist = cached.get_data_craigslist()
+        df_dania = cached.get_data_dania()
+        df_etsy = cached.get_data_etsy()
+        df_aptdeco = cached.get_data_aptdeco()
+        df_ikea = cached.get_data_ikea()
+        
+    df_furnitures = create_df_furnitures(df_craigslist, df_dania, df_etsy, df_aptdeco, df_ikea)
+    print(tabulate(df_furnitures, headers = 'keys', tablefmt = 'simple'))
+    
+    #furniture = input("What furniture would you like to browse?")
     #show list of furniture based on the keyword
+    #print(df_furnitures)
     is_movers = input("Do you want to find nearest movers? (y/n)")
     if is_movers == 'y':
         movers()
+        
+def create_df_furnitures(df1, df2, df3, df4, df5):
+    columns = ('Post URL', 'Post Title', 'Price', 'Location', 'Source')
+    df = pd.DataFrame(columns=columns)
+    print(df)
+    
+    df1['Source'] = 'craigslist'
+    df1 = df1.loc[:,['Post URL', 'Post Title', 'Price', 'Location', 'Source']].copy()
+    print(df1)
+    df2['location'] = 'NA'
+    df2['source'] = 'dania'
+    df2 = df2.loc[:,['url', 'title', 'price', 'location', 'source']].copy()
+    print(df2)
+    df3['Location'] = 'NA'
+    df3['Post URL'] = 'NA'
+    df3['Source'] = 'etsy'
+    df3 = df3.loc[:,['Post URL', 'Title', 'Price', 'Location', 'Source']].copy()
+    print(df3)
+    df4['Source'] = 'aptdeco'
+    print(df4)
+    df5 = df5.loc[:,['post_url', 'post_title', 'price', 'location', 'source']].copy()
+    
+    for index, row in df1.iterrows():
+        df.loc[len(df)] = row
+    for index, row in df2.iterrows():
+        df.loc[len(df)] = row
+    for index, row in df3.iterrows():
+        df.loc[len(df)] = row
+    for index, row in df4.iterrows():
+        df.loc[len(df)] = row
+    for index, row in df5.iterrows():
+        df.loc[len(df)] = row
+    
+    #df = pd.concat([df1, df2, df3, df4, df5], axis=0, ignore_index=True)
+    
+    return df
         
 def visualizations():
     print("Visualizations")
@@ -38,64 +109,56 @@ def visualizations():
     
 def shops():
     print('NEAREST SHOPS'.center(50, '-'))
-    zipcode = input("Enter Zipcode: ")
+    location = input("Enter Location: ")
+    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
+    if is_cached != 'y':
+        # YELLOWPAGES
+        yellowpages_base_url = "https://www.yellowpages.com/search?search_terms=Furniture&geo_location_terms="
+        df_yellowpages = yp.get_yellowpages_search_results(yellowpages_base_url, location)
+    else:
+        df_yellowpages = cached.get_data_yellowpages()
     #show list of shops in the particular zipcode
+    print(df_yellowpages)
+    #redirect to map
     
 def movers():
     print('NEAREST MOVERS'.center(50, '-'))
     zipcode = input('Enter Zipcode: ')
+    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
+    if is_cached != 'y':
+        # UHAUL
+        uhaul_base_url = "https://www.uhaul.com/Locations/"
+        df_uhaul = uh.get_uhaul_search_results(uhaul_base_url, zipcode)
+    else:
+        df_uhaul = cached.get_data_uhaul()
     #show list of shops in the particular zipcode
+    print(df_uhaul)
     
 def articles():
     print('ARTICLES'.center(50, '-'))
-    #show list of articles
+    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
+    if is_cached != 'y':
+        # REALSIMPLE
+        realsimple_base_url = "https://www.realsimple.com/home-organizing/decorating"
+        df_realsimple = real.get_realsimple_search_results(realsimple_base_url)
+    else:
+        df_realsimple = cached.get_data_realsimple()
+    print(df_realsimple)
 
+
+# MAIN MENU
 print("INTRO".center(50, '-'))
 print("Hello. It is recommended to use your terminal in fullscreen to view all the results.")
 print("SETUP".center(50, '-'))
 print("Please enter your Dania API token. View the Readme for instructions.")
 dania_token = input()
-is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip() == 'y'
 
-if is_cached != 'y':
-    print("Gathering data, this will take some time.")
-
-    # CRAIGSLIST
-    craigslist_base_url = "https://pittsburgh.craigslist.org/search/fua"
-    df_craigslist = craigl.get_craigslist_search_results(craigslist_base_url)
-
-    # DANIA
-    df_dania = dania.get_dania_search_results(dania_token)
-
-    # ETSY
-    etsy_base_url = "https://www.etsy.com/search?q=furniture&page={page}&ref=pagination"
-    df_etsy = etsy.get_etsy_search_results(etsy_base_url)
-
-    # APTDECO
-    aptdeco_base_url = "https://www.aptdeco.com/catalog/furniture?region=Northeast+%28NY%2C+NJ%2C+CT%2C+PA%2C+DE%29&page="
-    df_aptdeco = aptd.get_aptdeco_search_results(aptdeco_base_url)
-
-    # YELLOWPAGES
-    yellowpages_base_url = "https://www.yellowpages.com/search?search_terms=Furniture&geo_location_terms="
-    df_yellowpages = yp.get_yellowpages_search_results(yellowpages_base_url)
-
-    # UHAUL
-    uhaul_base_url = "https://www.uhaul.com/Locations/"
-    df_uhaul = uh.get_uhaul_search_results(uhaul_base_url)
-    
-    # REALSIMPLE
-    realsimple_base_url = "https://www.realsimple.com/home-organizing/decorating"
-    df_realsimple = real.get_realsimple_search_results(realsimple_base_url)
-
-# use cached code
-else:
-    df_craiglist = cached.get_cached_craiglist()
-    df_dania = cached.get_cached_dania()
-    df_etsy = cached.get_cached_etsy()
-    df_aptdeco = cached.get_cached_aptdeco()
-    df_yellowpages = cached.get_cached_yellowpages()
-    df_uhaul = cached.get_cached_uhaul()
-    df_realsimple = cached.get_cached_realsimple()
+df_furnitures = pd.DataFrame()
+df_craigslist = pd.DataFrame()
+df_dania = pd.DataFrame()
+df_etsy = pd.DataFrame()
+df_aptdeco = pd.DataFrame()
+df_ikea = pd.DataFrame()
 
 browse = True
 while browse:
@@ -108,24 +171,17 @@ while browse:
     print('6. Exit')
         
     menu = input("Enter Menu: ")
-    if(menu == 1):
+    if(menu == '1'):
         furniture()
-    elif(menu == 2):
+    elif(menu == '2'):
         visualizations()
-    elif(menu == 3):
+    elif(menu == '3'):
         shops()
-    elif(menu == 4):
+    elif(menu == '4'):
         movers()
-    elif(menu == 5):
+    elif(menu == '5'):
         articles()
-    elif(menu == 6):
+    elif(menu == '6'):
         browse = False
     else:
         print("Wrong Input, Try Again!")
-
-# exit = input()
-# if keyboard interrupt with exit, stop program
-# if exit:
-#    exit
-# else:
-#    browse()

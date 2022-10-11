@@ -32,7 +32,7 @@ def get_craigslist_search_results(base_url):
     This code only scraps the first 5 pages. If you want to scrap all pages you can comment line 36 and instead run line 38.
     This will take a long time.
     """
-    for i in range(0, 6):
+    for i in range(0, 2):
     # for i in total_pages:
         
         params = {
@@ -52,7 +52,7 @@ def get_craigslist_search_results(base_url):
             post_datetime = result_row.time['datetime']
             post_id = result_row.h3.a['data-id']
             post_url = result_row.h3.a['href']
-            price = result_row.find('span', 'result-price').text
+            price = result_row.find('span', 'result-price').text[1:]
             location = result_row.find('span', 'result-hood').text if result_row.find('span', 'result-hood') else ''
             post_title = result_row.h3.a.text
         # post_title = furniture_elem.find('a', class_="result-title hdrlnk")
@@ -73,6 +73,10 @@ def get_craigslist_search_results(base_url):
     
     return df
 
+if __name__ == '__main__':
+    craigslist_base_url = "https://pittsburgh.craigslist.org/search/fua"
+    data = get_craigslist_search_results(craigslist_base_url)
+    print(data)
 
 # furniture_elems = results.find_all('li', class_="result-row")
 # for furniture_elem in furniture_elems:
