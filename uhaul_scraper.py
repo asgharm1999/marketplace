@@ -9,7 +9,6 @@ import requests
 def get_uhaul_search_results(base_url, zip_code):
 
     url = base_url + str(zip_code) + "/Results/"
-    print(url)
 
 #   - To extract html file    
 #   html = urlopen(base_url)

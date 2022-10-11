@@ -126,7 +126,6 @@ def get_data_ikea():
         if (datetime.strptime(max[14:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[14:-5], '%m_%d_%y %H%M%S')):
             max = file
     df = pd.read_csv(max)
-    print(df)
     return df
     
 if __name__ == '__main__':

@@ -20,6 +20,7 @@ import dania_scraper as dania
 import etsy_scraper as etsy
 import yellowpages_scraper as yp
 import get_cached_data as cached
+import re
 
 
 # FUNCTIONS
@@ -54,51 +55,58 @@ def furniture():
         df_aptdeco = cached.get_data_aptdeco()
         df_ikea = cached.get_data_ikea()
         
-    df_furnitures = create_df_furnitures(df_craigslist, df_dania, df_etsy, df_aptdeco, df_ikea)
-    print(tabulate(df_furnitures, headers = 'keys', tablefmt = 'simple'))
-    
-    #furniture = input("What furniture would you like to browse?")
+    df_furnitures = create_master(df_craigslist, df_dania, df_etsy, df_aptdeco, df_ikea)
     #show list of furniture based on the keyword
-    #print(df_furnitures)
+    furniture = input("What furniture would you like to browse?")
+    columns = ('Post URL', 'Post Title', 'Price', 'Location')
+    search_results = pd.DataFrame(columns=columns)
+    for index, row in df_furnitures.iterrows():
+        if re.search(furniture, row['Post Title']) != None:
+            search_results.loc[len(search_results)] = row
+    # df_furnitures.loc[re.search(pat, df_furnitures['Post Title']) != None]
+    if search_results.empty:
+        print("No furnitures found!")
+    else:
+        print(tabulate(search_results["Post URL":], headers = 'keys', tablefmt = 'simple', showindex=False))
     is_movers = input("Do you want to find nearest movers? (y/n)")
     if is_movers == 'y':
         movers()
         
-def create_df_furnitures(df1, df2, df3, df4, df5):
-    columns = ('Post URL', 'Post Title', 'Price', 'Location', 'Source')
-    df = pd.DataFrame(columns=columns)
-    print(df)
+def create_master(df1, df2, df3, df4, df5):
+    # columns = ('Post URL', 'Post Title', 'Price', 'Location', 'Source')
+    # df = pd.DataFrame(columns=columns)
+    # print(df)
     
-    df1['Source'] = 'craigslist'
-    df1 = df1.loc[:,['Post URL', 'Post Title', 'Price', 'Location', 'Source']].copy()
-    print(df1)
-    df2['location'] = 'NA'
-    df2['source'] = 'dania'
-    df2 = df2.loc[:,['url', 'title', 'price', 'location', 'source']].copy()
-    print(df2)
-    df3['Location'] = 'NA'
-    df3['Post URL'] = 'NA'
-    df3['Source'] = 'etsy'
-    df3 = df3.loc[:,['Post URL', 'Title', 'Price', 'Location', 'Source']].copy()
-    print(df3)
-    df4['Source'] = 'aptdeco'
-    print(df4)
-    df5 = df5.loc[:,['post_url', 'post_title', 'price', 'location', 'source']].copy()
+    # df1['Source'] = 'craigslist'
+    # df1 = df1.loc[:,['Post URL', 'Post Title', 'Price', 'Location', 'Source']].copy()
+    # print(df1)
+    # df2['location'] = 'NA'
+    # df2['source'] = 'dania'
+    # df2 = df2.loc[:,['url', 'title', 'price', 'location', 'source']].copy()
+    # print(df2)
+    # df3['Location'] = 'NA'
+    # df3['Post URL'] = 'NA'
+    # df3['Source'] = 'etsy'
+    # df3 = df3.loc[:,['Post URL', 'Title', 'Price', 'Location', 'Source']].copy()
+    # print(df3)
+    # df4['Source'] = 'aptdeco'
+    # print(df4)
+    # df5 = df5.loc[:,['post_url', 'post_title', 'price', 'location', 'source']].copy()
     
-    for index, row in df1.iterrows():
-        df.loc[len(df)] = row
-    for index, row in df2.iterrows():
-        df.loc[len(df)] = row
-    for index, row in df3.iterrows():
-        df.loc[len(df)] = row
-    for index, row in df4.iterrows():
-        df.loc[len(df)] = row
-    for index, row in df5.iterrows():
-        df.loc[len(df)] = row
+    # for index, row in df1.iterrows():
+    #     df.loc[len(df)] = row
+    # for index, row in df2.iterrows():
+    #     df.loc[len(df)] = row
+    # for index, row in df3.iterrows():
+    #     df.loc[len(df)] = row
+    # for index, row in df4.iterrows():
+    #     df.loc[len(df)] = row
+    # for index, row in df5.iterrows():
+    #     df.loc[len(df)] = row
     
-    #df = pd.concat([df1, df2, df3, df4, df5], axis=0, ignore_index=True)
+    # df = pd.concat([df1, df2, df3, df4, df5], axis=0, ignore_index=True)
     
-    return df
+    return df4
         
 def visualizations():
     print("Visualizations")
@@ -115,10 +123,21 @@ def shops():
         # YELLOWPAGES
         yellowpages_base_url = "https://www.yellowpages.com/search?search_terms=Furniture&geo_location_terms="
         df_yellowpages = yp.get_yellowpages_search_results(yellowpages_base_url, location)
+        if df_yellowpages.empty:
+            print("No nearby movers!")
+        else:
+            print(tabulate(df_yellowpages, headers = 'keys', tablefmt = 'simple', showindex=False))
     else:
         df_yellowpages = cached.get_data_yellowpages()
-    #show list of shops in the particular zipcode
-    print(df_yellowpages)
+        columns = ('Store URL', 'Name', 'Phone', 'Street_Address', 'Locality', 'Business_years')
+        search_results = pd.DataFrame(columns=columns)
+        for index, row in df_yellowpages.iterrows():
+            if re.search(location, row['Locality']) != None:
+                search_results.loc[len(search_results)] = row
+        if search_results.empty:
+            print("No nearby shops!")
+        else:
+            print(tabulate(search_results, headers = 'keys', tablefmt = 'simple', showindex=False))
     #redirect to map
     
 def movers():
@@ -129,10 +148,21 @@ def movers():
         # UHAUL
         uhaul_base_url = "https://www.uhaul.com/Locations/"
         df_uhaul = uh.get_uhaul_search_results(uhaul_base_url, zipcode)
+        if df_uhaul.empty:
+            print("No nearby movers!")
+        else:
+            print(tabulate(df_uhaul, headers = 'keys', tablefmt = 'simple', showindex=False))
     else:
         df_uhaul = cached.get_data_uhaul()
-    #show list of shops in the particular zipcode
-    print(df_uhaul)
+        columns = ('Store URL', 'Name', 'Location', 'Contact No', 'Operating Hours')
+        search_results = pd.DataFrame(columns=columns)
+        for index, row in df_uhaul.iterrows():
+            if re.search(zipcode, row['Location']) != None:
+                search_results.loc[len(search_results)] = row
+        if search_results.empty:
+            print("No nearby movers!")
+        else:
+            print(tabulate(search_results, headers = 'keys', tablefmt = 'simple', showindex=False))
     
 def articles():
     print('ARTICLES'.center(50, '-'))
