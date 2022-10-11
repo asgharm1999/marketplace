@@ -8,10 +8,6 @@ import time
 import re
 import os
 import math
-import install_packages as ip
-packages = ['apify', 'apify-client']
-for p in packages:
-    ip.import_or_install(p)
 from apify_client import ApifyClient
 
 def get_dania_search_results(token):
