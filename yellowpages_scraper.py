@@ -52,9 +52,9 @@ def get_yellowpages_search_results(base_url, location):
 #               fclean.write(business_years)
                 search_results.append([post_url, name, phone, street_Address, locality, business_years])
             except: 
-                    #raise e 
-                    #b=0
-                    print("Failed to Add New Data")
+                # raise e 
+                b=0
+                # print("Failed to Add New Data")
         page = page+1
     
 #   fout.close()
