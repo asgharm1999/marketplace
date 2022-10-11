@@ -11,6 +11,7 @@ import requests
 import pandas as pd
 import datetime
 
+# Fetch search results from Etsy
 def get_etsy_search_results(base_url):
 
     search_results = []

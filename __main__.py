@@ -6,9 +6,9 @@ Sahithya Senthilkumar sahithys@andrew.cmu.edu
 Saba Zaheer szaheer@andrew.cmu.edu
 """
 
-#import installation_packages as ip
-#packages = ['geopy', 'folium', 'apify', 'apify-client']
-#for p in packages:
+# import installation_packages as ip
+# packages = ['geopy', 'folium', 'apify', 'apify-client']
+# for p in packages:
 #    ip.import_or_install(p)
 
 import pandas as pd
@@ -34,7 +34,7 @@ import re
 # FUNCTIONS
 def furniture():
     print('FURNITURES'.center(50, '-'))
-    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
+    is_cached = input("Do you want to use cached data? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
     if is_cached != 'y':
         print("Gathering data, this will take some time.")
 
@@ -73,10 +73,10 @@ def furniture():
             search_results.loc[len(search_results)] = row
     # df_furnitures.loc[re.search(pat, df_furnitures['Post Title']) != None]
     if search_results.empty:
-        print("No furnitures found!")
+        print("No furniture found!")
     else:
         print(tabulate(search_results["Post URL":], headers = 'keys', tablefmt = 'simple', showindex=False))
-    is_movers = input("Do you want to find nearest movers? (y/n)")
+    is_movers = input("Do you want to find nearest movers? (y/n)").lower().strip()
     if is_movers == 'y':
         movers()
         
@@ -116,9 +116,11 @@ def create_master(df1, df2, df3, df4, df5):
     
     return df4
         
+# Prints visualizations        
 def visualizations():
     print("Visualizations")
     
+ # Fetches and returns nearby shops from YellowPages  
 def shops():
     print('NEAREST SHOPS'.center(50, '-'))
     location = input("Enter Location: ")
@@ -142,8 +144,9 @@ def shops():
             print("No nearby shops!")
         else:
             print(tabulate(search_results, headers = 'keys', tablefmt = 'simple', showindex=False))
-    #redirect to map
+    # redirect to map
     
+# Fetches movers from UHaul     
 def movers():
     print('NEAREST MOVERS'.center(50, '-'))
     zipcode = input('Enter Zipcode: ')
@@ -168,6 +171,7 @@ def movers():
         else:
             print(tabulate(search_results, headers = 'keys', tablefmt = 'simple', showindex=False))
     
+# Fetches articles from RealSimple
 def articles():
     print('ARTICLES'.center(50, '-'))
     is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()

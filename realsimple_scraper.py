@@ -18,6 +18,7 @@ import os
 import math
 import pip
 
+# Fetch search results from RealSimple
 def get_realsimple_search_results(base_url):
         
     page = requests.get(base_url)
@@ -54,9 +55,9 @@ def get_realsimple_search_results(base_url):
         data.append(details)
         # count = count + 1
     
-
     df = pd.DataFrame (data, columns = ['Category','Link','Title','Image_Link'])
     # print(df)
 
+    # Save to CSV
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df.to_csv(f'RealSimple Results ({timestamp}).csv', index=False)
