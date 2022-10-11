@@ -43,7 +43,7 @@ def furniture():
         df_craigslist = craigl.get_craigslist_search_results(craigslist_base_url)
 
         # DANIA
-        df_dania = dania.get_dania_search_results(dania_token)
+        df_dania = dania.get_dania_search_results()
 
         # ETSY
         etsy_base_url = "https://www.etsy.com/search?q=furniture&page={page}&ref=pagination"
