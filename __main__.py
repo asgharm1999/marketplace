@@ -9,13 +9,12 @@ import glob
 import aptdeco_scraper as aptd
 import uhaul_scraper as uh
 import craiglist_scraper as craigl
-import realsimple_dania_scraper as real
+import realsimple_scraper as real
+import dania_scraper as dania
 import etsy_scraper as etsy
 import yellowpages_scraper as yp
-import create_master_csv as master
 import get_cached_data as cached
-import prompts as ps
-from apify_client import ApifyClient
+import install_packages as ip
     
 def furniture():
     print('FURNITURES'.center(50, '-'))
@@ -60,9 +59,8 @@ if is_cached != 'y':
     craigslist_base_url = "https://pittsburgh.craigslist.org/search/fua"
     df_craigslist = craigl.get_craigslist_search_results(craigslist_base_url)
 
-    # DANIA 
-    # dania_base_url = "https://www.realsimple.com/home-organizing/decorating"
-    df_dania = real.get_dania_search_results(dania_token)
+    # DANIA
+    df_dania = dania.get_dania_search_results(dania_token)
 
     # ETSY
     etsy_base_url = "https://www.etsy.com/search?q=furniture&page={page}&ref=pagination"
@@ -93,8 +91,6 @@ else:
     df_yellowpages = cached.get_cached_yellowpages()
     df_uhaul = cached.get_cached_uhaul()
     df_realsimple = cached.get_cached_realsimple()
-
-df_furniture = df_craiglist.copy
 
 browse = True
 while browse:

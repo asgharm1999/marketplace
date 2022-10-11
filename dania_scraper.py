@@ -8,21 +8,13 @@ import time
 import re
 import os
 import math
+import install_packages as ip
+packages = ['apify', 'apify-client']
+for p in packages:
+    ip.import_or_install(p)
 from apify_client import ApifyClient
-import pip
 
 def get_dania_search_results(token):
-    
-    def import_or_install(package):
-        try:
-            __import__(package)
-        except:
-            pip.main(['install', package])       
-
-    # Required for RealSimple
-    packages = ['apify', 'apify-client']
-    for p in packages:
-        import_or_install(p)
         
       # Initialize the ApifyClient with your API token
     client = ApifyClient(token)

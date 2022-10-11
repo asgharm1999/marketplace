@@ -8,10 +8,9 @@ import time
 import re
 import os
 import math
-from apify_client import ApifyClient
 import pip
 
-def get_realsimple_search_results(base_url, token):
+def get_realsimple_search_results(base_url):
         
     page = requests.get(base_url)
     data=[]
