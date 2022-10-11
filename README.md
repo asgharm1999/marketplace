@@ -1,4 +1,4 @@
-# Furniture Marketplace
+# Furniest: a furniture assistance solution
 -----------------------------------------------
 
 ##### Authors:
