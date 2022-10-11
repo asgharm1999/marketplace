@@ -1,3 +1,8 @@
+import installation_packages as ip
+packages = ['geopy', 'folium', 'apify', 'apify-client']
+for p in packages:
+    ip.import_or_install(p)
+
 import pandas as pd
 import numpy as np
 import os
@@ -9,12 +14,13 @@ import glob
 import aptdeco_scraper as aptd
 import uhaul_scraper as uh
 import craiglist_scraper as craigl
-import realsimple_scraper as real
-import dania_scraper as dania
+import realsimple_dania_scraper as real
 import etsy_scraper as etsy
 import yellowpages_scraper as yp
+import create_master_csv as master
 import get_cached_data as cached
-import install_packages as ip
+import prompts as ps
+from apify_client import ApifyClient
     
 def furniture():
     print('FURNITURES'.center(50, '-'))
@@ -26,10 +32,6 @@ def furniture():
         
 def visualizations():
     print("Visualizations")
-    minimum_price = input("Minimum Price: ")
-    maximum_price = input("Maximum Price: ")
-    minimum_rating = input("Minimum Rating: ")
-    #call the visualization
     
 def shops():
     print('NEAREST SHOPS'.center(50, '-'))
@@ -59,8 +61,9 @@ if is_cached != 'y':
     craigslist_base_url = "https://pittsburgh.craigslist.org/search/fua"
     df_craigslist = craigl.get_craigslist_search_results(craigslist_base_url)
 
-    # DANIA
-    df_dania = dania.get_dania_search_results(dania_token)
+    # DANIA 
+    # dania_base_url = "https://www.realsimple.com/home-organizing/decorating"
+    df_dania = real.get_dania_search_results(dania_token)
 
     # ETSY
     etsy_base_url = "https://www.etsy.com/search?q=furniture&page={page}&ref=pagination"
@@ -92,6 +95,7 @@ else:
     df_uhaul = cached.get_cached_uhaul()
     df_realsimple = cached.get_cached_realsimple()
 
+ 
 browse = True
 while browse:
     print('MENU'.center(51, '-'))
