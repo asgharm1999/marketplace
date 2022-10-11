@@ -1,3 +1,11 @@
+"""
+Authors:
+Muhammad Asghar masghar@andrew.cmu.edu 
+Edvin Handoko ehandoko@andrew.cmu.edu 
+Sahithya Senthilkumar sahithys@andrew.cmu.edu 
+Saba Zaheer szaheer@andrew.cmu.edu
+"""
+
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd

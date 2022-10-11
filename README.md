@@ -28,10 +28,7 @@ Download or clone the marketplace repo. In terminal or command line, navigate to
 Simply run `python3 __main__.py`.
 <br/>
 
-Everything is interfaced via the command line with simple prompts. To begin with, it will automatically install a library (apiclient) if it is not detected on your computer. Afterwards, you will be prompted to enter in an API token for RealSimple. Should you not enter anything in, RealSimple will not be scraped. However, a sample will be provided if you prefer to see the cached data. To generate an API token please sign up at https://console.apify.com/actors/moJRLRc85AitArpNN#/console and paste it into the prompt. 
+Everything is interfaced via the command line with simple prompts. Afterwards, you will be prompted to enter in an API token for RealSimple. To generate an API token please sign up at https://console.apify.com/actors/moJRLRc85AitArpNN#/console and paste it into the prompt. 
 <br/>
 
 You can now enter a product you are interested in purchasing (e.g. couches, tables, chairs, etc.) and results will be displayed. 
-<br/>
-
-To exit, simply type `exit`.

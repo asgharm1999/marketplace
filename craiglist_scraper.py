@@ -1,3 +1,11 @@
+"""
+Authors:
+Muhammad Asghar masghar@andrew.cmu.edu 
+Edvin Handoko ehandoko@andrew.cmu.edu 
+Sahithya Senthilkumar sahithys@andrew.cmu.edu 
+Saba Zaheer szaheer@andrew.cmu.edu
+"""
+
 import pandas as pd
 import numpy as np
 import datetime
@@ -29,7 +37,7 @@ def get_craigslist_search_results(base_url):
     # print(results.prettify())
 
     """
-    This code only scraps the first 5 pages. If you want to scrap all pages you can comment line 36 and instead run line 38.
+    This code only scraps the first 2 pages. If you want to scrap all pages you can comment line 43 and instead run line 44.
     This will take a long time.
     """
     for i in range(0, 2):

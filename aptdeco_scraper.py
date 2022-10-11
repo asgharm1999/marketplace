@@ -1,3 +1,11 @@
+"""
+Authors:
+Muhammad Asghar masghar@andrew.cmu.edu 
+Edvin Handoko ehandoko@andrew.cmu.edu 
+Sahithya Senthilkumar sahithys@andrew.cmu.edu 
+Saba Zaheer szaheer@andrew.cmu.edu
+"""
+
 # import numpy as np # - Library for numpy
 import pandas as pd
 import datetime
