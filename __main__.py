@@ -11,8 +11,9 @@ Saba Zaheer szaheer@andrew.cmu.edu
 # for p in packages:
 #    ip.import_or_install(p)
 
-import pandas as pd
+from doctest import master
 from tabulate import tabulate
+import pandas as pd
 import numpy as np
 import os
 import pip
@@ -30,10 +31,18 @@ import yellowpages_scraper as yp
 import get_cached_data as cached
 import DFP_map_visualization as mapvi
 import re
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # FUNCTIONS
 def furniture():
-    print('FURNITURES'.center(50, '-'))
+    print()
+    print()
+    print('---------------------------------------------------')
+    print('FURNITURE'.center(51, '-'))
+    print('---------------------------------------------------')
+    print()
+    print()
     is_cached = input("Do you want to use cached data? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
     if is_cached != 'y':
         print("Gathering data, this will take some time.")
@@ -54,7 +63,7 @@ def furniture():
         df_aptdeco = aptd.get_aptdeco_search_results(aptdeco_base_url)
         
         # IKEA
-        df_ikea = cached.get_cached_ikea()
+        df_ikea = cached.get_data_ikea()
         
     else:
         df_craigslist = cached.get_data_craigslist()
@@ -64,48 +73,109 @@ def furniture():
         df_ikea = cached.get_data_ikea()
         
     df_furnitures = create_master(df_craigslist, df_dania, df_etsy, df_aptdeco, df_ikea)
+    # print(df_furnitures)
     #show list of furniture based on the keyword
     furniture = input("What furniture would you like to browse?")
-    columns = ('Post URL', 'Post Title', 'Price', 'Location')
+    furniture = furniture.lower()
+    columns = ('Post_URL', 'Post_Title', 'Price', 'Location')
     search_results = pd.DataFrame(columns=columns)
-    for index, row in df_furnitures.iterrows():
-        if re.search(furniture, row['Post Title']) != None:
-            search_results.loc[len(search_results)] = row
-    # df_furnitures.loc[re.search(pat, df_furnitures['Post Title']) != None]
+ 
+    for i in range(len(df_furnitures)):
+        if furniture in df_furnitures.iloc[i].Post_Title.lower():
+            search_results=pd.concat([search_results, df_furnitures.iloc[i-1:i]])
+
+    search_results['Price'] = search_results['Price'].astype(str)
+    search_results['Price'] = search_results['Price'].apply(lambda x: float(x.split()[0].replace(',','').replace('$','')))
+    
+    print('Please view the boxplot to see price distribution across sources.')
+    
+    sns.boxplot(x = search_results['Price'],
+                y = search_results['Source'])
+    plt.title('Prices across different sources',
+              fontweight="bold")
+
+    plt.xlabel('Price',
+              fontweight="bold")
+
+    plt.ylabel('Source', 
+              fontweight="bold")
+    
+    plt.show()
+    
+    price = input("What is the maximum price you would like to spend?")
+    try:
+        price = float(price)
+    except ValueError:
+        print('The provided value is not a number')
+    
+    print('This histogram gives a distribution of furniture prices and your maximum value within the distribution')
+    
+    df2 = search_results[search_results.Price < search_results.Price.mean()]
+
+    n_bins = 10
+      
+    plt.hist(df2.Price, n_bins, density = False, 
+             histtype ='bar',
+             color = "lightblue")
+      
+    plt.title('Histogram of prices',
+              fontweight ="bold")
+
+    plt.xlabel('Price Range',
+              fontweight ="bold")
+
+    plt.ylabel('Options availaable', 
+              fontweight ="bold")
+
+    plt.axvline(x = price, color = 'r', label = 'Your max price',ymin = 0.1, ymax = 0.90)
+      
+    plt.show()
+    
+    search_results = search_results[search_results.Price < price]
+    
+    # for i in range(len(df_furnitures)):
+    # if price <= df_furnitures.iloc[i].Price:
+  #  print(df_furnitures.Price.astype(float).nsmallest(10))
+    #sear.append(df_furnitures.Price.astype(float).nsmallest(10))
+    
     if search_results.empty:
-        print("No furniture found!")
+        print("No furnitures found!")
     else:
-        print(tabulate(search_results["Post URL":], headers = 'keys', tablefmt = 'simple', showindex=False))
-    is_movers = input("Do you want to find nearest movers? (y/n)").lower().strip()
-    if is_movers == 'y':
-        movers()
+        search_results.to_csv('Results.csv')
+       # print(tabulate(search_results["Post_URL":], headers = 'keys', tablefmt = 'simple', showindex=False))
+        print("All articles of your interest have been saved to Results.csv in your directory.")
+        print("Here is a list of the 10 or less cheapest pieces you can find within your price range!")
+        
+        last_df = search_results.sort_values(by = ['Price'], ascending=False).reset_index()
+        last_df = last_df[['Post_Title', 'Price', 'Source']]
+        print(last_df.head(10))
+
         
 def create_master(df1, df2, df3, df4, df5):
-    columns = ('Post URL', 'Post Title', 'Price', 'Location', 'Source')
+    columns = ('Post_URL', 'Post_Title', 'Price', 'Location', 'Source')
     df = pd.DataFrame(columns=columns)
-
+    
     df_c = df1
     df1 = df_c[['Post URL', 'Post Title', 'Price', 'Location']]
     df1['Source'] = 'craigslist'
     df1.columns=df.columns
     
     df_d = df2
-    df_d['Location']='NA'    
+    df_d['Location'] = 'NA'    
     df2 = df_d[['url', 'title', 'price', 'Location']]
     df2['Source'] = 'Dania'
     df2.columns=df.columns
     
     df_e = df3
-    df_e['Location']='NA'    
-    df_e['Post URL']='NA'    
+    df_e['Location'] = 'NA'    
+    df_e['Post URL'] = 'NA'    
     df3 = df_e[['Post URL', 'Title', 'Price', 'Location']]
     df3['Source'] = 'Etsy'
     df3.columns=df.columns
     
-    
     df_a = df4
     df4 = df_a[['Post URL', 'Post Title', 'Price', 'Location']]
-    df4['Source'] = 'Etsy'
+    df4['Source'] = 'AptDeco'
     df4.columns=df.columns
     
     df_i= df5
@@ -115,12 +185,8 @@ def create_master(df1, df2, df3, df4, df5):
     df = pd.concat([df1, df2, df3, df4, df5], axis=0)
     
     return df
-        
-# Prints visualizations        
-def visualizations():
-    print("Visualizations")
     
- # Fetches and returns nearby shops from YellowPages  
+# Fetches and returns nearby shops from YellowPages  
 def shops():
     print('NEAREST SHOPS'.center(50, '-'))
     location = input("Enter Location: ")
@@ -198,26 +264,29 @@ df_ikea = pd.DataFrame()
 
 browse = True
 while browse:
+    print()
+    print()
+    print('---------------------------------------------------')
     print('MENU'.center(51, '-'))
+    print('---------------------------------------------------')
+    print()
+    print()
     print('1. Search Furniture')
-    print('2. View Visualizations')
-    print('3. Explore Nearest Shops')
-    print('4. Find Nearest Movers')
-    print('5. Browse Articles')
-    print('6. Exit')
+    print('2. Explore Nearest Shops')
+    print('3. Find Nearest Movers')
+    print('4. Browse Articles')
+    print('5. Exit')
         
     menu = input("Enter Menu: ")
     if(menu == '1'):
         furniture()
     elif(menu == '2'):
-        visualizations()
-    elif(menu == '3'):
         shops()
-    elif(menu == '4'):
+    elif(menu == '3'):
         movers()
-    elif(menu == '5'):
+    elif(menu == '4'):
         articles()
-    elif(menu == '6'):
+    elif(menu == '5'):
         browse = False
     else:
         print("Wrong Input, Try Again!")
