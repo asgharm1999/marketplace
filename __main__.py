@@ -198,6 +198,8 @@ def shops():
         if df_yellowpages.empty:
             print("No nearby movers!")
         else:
+            df_yellowpages['Location'] = df_yellowpages['Street_Address'] + "," + df_yellowpages['Locality']
+            print(len(df_yellowpages))
             mapvi.map_visualization(df_yellowpages)
     else:
         df_yellowpages = cached.get_data_yellowpages()
@@ -209,6 +211,8 @@ def shops():
         if search_results.empty:
             print("No nearby shops!")
         else:
+            search_results['Location'] = search_results['Street_Address'] + "," + search_results['Locality']
+            print(len(search_results))
             mapvi.map_visualization(search_results)
     # redirect to map
     
@@ -224,7 +228,8 @@ def movers():
         if df_uhaul.empty:
             print("No nearby movers!")
         else:
-            print(tabulate(df_uhaul, headers = 'keys', tablefmt = 'simple', showindex=False))
+            df_uhaul['Location'] =df_uhaul['Location'].apply(lambda x: x.split(',')[1])
+            mapvi.map_visualization(df_uhaul)
     else:
         df_uhaul = cached.get_data_uhaul()
         columns = ('Store URL', 'Name', 'Location', 'Contact No', 'Operating Hours')
@@ -235,7 +240,8 @@ def movers():
         if search_results.empty:
             print("No nearby movers!")
         else:
-            print(tabulate(search_results, headers = 'keys', tablefmt = 'simple', showindex=False))
+            search_results['Location'] =search_results['Location'].apply(lambda x: x.split(',')[1])
+            mapvi.map_visualization(search_results)
     
 # Fetches articles from RealSimple
 def articles():
