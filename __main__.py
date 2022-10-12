@@ -39,7 +39,7 @@ def furniture():
     print()
     print()
     print('---------------------------------------------------')
-    print('FURNITURE'.center(51, '-'))
+    print('FURNITURES'.center(50, '-'))
     print('---------------------------------------------------')
     print()
     print()
@@ -103,10 +103,7 @@ def furniture():
     plt.show()
     
     price = input("What is the maximum price you would like to spend?")
-    try:
-        price = float(price)
-    except ValueError:
-        print('The provided value is not a number')
+    price = float(price)
     
     print('This histogram gives a distribution of furniture prices and your maximum value within the distribution')
     
@@ -154,6 +151,7 @@ def furniture():
 def create_master(df1, df2, df3, df4, df5):
     columns = ('Post_URL', 'Post_Title', 'Price', 'Location', 'Source')
     df = pd.DataFrame(columns=columns)
+
     
     df_c = df1
     df1 = df_c[['Post URL', 'Post Title', 'Price', 'Location']]
@@ -161,21 +159,22 @@ def create_master(df1, df2, df3, df4, df5):
     df1.columns=df.columns
     
     df_d = df2
-    df_d['Location'] = 'NA'    
+    df_d['Location']='NA'    
     df2 = df_d[['url', 'title', 'price', 'Location']]
     df2['Source'] = 'Dania'
     df2.columns=df.columns
     
     df_e = df3
-    df_e['Location'] = 'NA'    
-    df_e['Post URL'] = 'NA'    
+    df_e['Location']='NA'    
+    df_e['Post URL']='NA'    
     df3 = df_e[['Post URL', 'Title', 'Price', 'Location']]
     df3['Source'] = 'Etsy'
     df3.columns=df.columns
     
+    
     df_a = df4
     df4 = df_a[['Post URL', 'Post Title', 'Price', 'Location']]
-    df4['Source'] = 'AptDeco'
+    df4['Source'] = 'Etsy'
     df4.columns=df.columns
     
     df_i= df5
