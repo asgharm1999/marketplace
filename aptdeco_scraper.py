@@ -110,7 +110,3 @@ if __name__ == '__main__':
     aptdeco_base_url = "https://www.aptdeco.com/catalog/furniture?region=Northeast+%28NY%2C+NJ%2C+CT%2C+PA%2C+DE%29&page="
     data = get_aptdeco_search_results(aptdeco_base_url)
     print(data)
-
-    
-
-
