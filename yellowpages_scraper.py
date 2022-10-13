@@ -27,7 +27,7 @@ def get_yellowpages_search_results(base_url, location):
 #   totalpage += 1
 #   print(totalpage)
     
-    totalpage = 6
+    totalpage = 3
     page = 1
 #   titles = []
     while page < totalpage:
@@ -46,12 +46,24 @@ def get_yellowpages_search_results(base_url, location):
                 street_Address = (item.find("div", {'class':'street-address'}).get_text().strip())
                 locality = (item.find("div", {'class':'locality'}).get_text().strip())
                 business_years = (item.find("div", {'class':'years-in-business'}).get_text().strip())
+#               print("https://www.yellowpages.com/" + (item.find("a", {'class':'business-name'}).attrs['href']))
+#               print(item.find("a", {'class':'business-name'}).find('span').text)
+#               print(item.find("div", {'class':'phones phone primary'}).get_text().strip())
+#               print(item.find("div", {'class':'street-address'}).get_text().strip())
+#               print(item.find("div", {'class':'locality'}).get_text().strip())
+#               print(item.find("div", {'class':'years-in-business'}).get_text().strip())
+#               fclean.write(post_url)
+#               fclean.write(name)
+#               fclean.write(phone)
+#               fclean.write(street_Address)
+#               fclean.write(locality)
+#               fclean.write(business_years)
                 search_results.append([post_url, name, phone, street_Address, locality, business_years])
             except: 
                 # raise e 
-                b = 0
+                b=0
                 # print("Failed to Add New Data")
-        page = page + 1
+        page = page+1
     
 #   fout.close()
 #   fclean.close()    

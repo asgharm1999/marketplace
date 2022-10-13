@@ -18,9 +18,9 @@ def get_etsy_search_results(base_url):
     page = 1
     titles = []
 
-    while page < 30:
+    while page < 5:
         response = requests.get(base_url)
-        soup = BeautifulSoup(response.content,'html')
+        soup = BeautifulSoup(response.content, features="lxml")
         for item in soup.select('.wt-grid__item-xs-6'): 
             try: 
                 title = item.select('h3')[0].get_text().strip()

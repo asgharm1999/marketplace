@@ -7,13 +7,13 @@ Saba Zaheer szaheer@andrew.cmu.edu
 """
 
 # import installation_packages as ip
-# packages = ['geopy', 'folium', 'apify', 'apify-client']
+# packages = ['seaborn','matplotlib','numpy','tabulate','urllib3','pandas','geopy', 'folium', 'apify', 'apify-client']
 # for p in packages:
 #    ip.import_or_install(p)
-
-from doctest import master
-from tabulate import tabulate
+   
+from tkinter import N
 import pandas as pd
+from tabulate import tabulate
 import numpy as np
 import os
 import pip
@@ -43,7 +43,7 @@ def furniture():
     print('---------------------------------------------------')
     print()
     print()
-    is_cached = input("Do you want to use cached data? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
+    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
     if is_cached != 'y':
         print("Gathering data, this will take some time.")
 
@@ -73,32 +73,32 @@ def furniture():
         df_ikea = cached.get_data_ikea()
         
     df_furnitures = create_master(df_craigslist, df_dania, df_etsy, df_aptdeco, df_ikea)
-    # print(df_furnitures)
     #show list of furniture based on the keyword
     furniture = input("What furniture would you like to browse?")
     furniture = furniture.lower()
     columns = ('Post_URL', 'Post_Title', 'Price', 'Location')
     search_results = pd.DataFrame(columns=columns)
+
  
-    for i in range(len(df_furnitures)):
+    for  i in range(len(df_furnitures)):
         if furniture in df_furnitures.iloc[i].Post_Title.lower():
             search_results=pd.concat([search_results, df_furnitures.iloc[i-1:i]])
 
-    search_results['Price'] = search_results['Price'].astype(str)
+    search_results['Price']=search_results['Price'].astype(str)
     search_results['Price'] = search_results['Price'].apply(lambda x: float(x.split()[0].replace(',','').replace('$','')))
     
     print('Please view the boxplot to see price distribution across sources.')
     
     sns.boxplot(x = search_results['Price'],
-                y = search_results['Source'])
+            y = search_results['Source'])
     plt.title('Prices across different sources',
-              fontweight="bold")
+              fontweight ="bold")
 
     plt.xlabel('Price',
-              fontweight="bold")
+              fontweight ="bold")
 
     plt.ylabel('Source', 
-              fontweight="bold")
+              fontweight ="bold")
     
     plt.show()
     
@@ -107,7 +107,7 @@ def furniture():
     
     print('This histogram gives a distribution of furniture prices and your maximum value within the distribution')
     
-    df2 = search_results[search_results.Price < search_results.Price.mean()]
+    df2 = search_results[search_results.Price<search_results.Price.mean()]
 
     n_bins = 10
       
@@ -124,16 +124,12 @@ def furniture():
     plt.ylabel('Options availaable', 
               fontweight ="bold")
 
+
     plt.axvline(x = price, color = 'r', label = 'Your max price',ymin = 0.1, ymax = 0.90)
       
     plt.show()
     
-    search_results = search_results[search_results.Price < price]
-    
-    # for i in range(len(df_furnitures)):
-    # if price <= df_furnitures.iloc[i].Price:
-  #  print(df_furnitures.Price.astype(float).nsmallest(10))
-    #sear.append(df_furnitures.Price.astype(float).nsmallest(10))
+    search_results=search_results[search_results.Price<price]
     
     if search_results.empty:
         print("No furnitures found!")
@@ -143,9 +139,16 @@ def furniture():
         print("All articles of your interest have been saved to Results.csv in your directory.")
         print("Here is a list of the 10 or less cheapest pieces you can find within your price range!")
         
-        last_df = search_results.sort_values(by = ['Price'], ascending=False).reset_index()
-        last_df = last_df[['Post_Title', 'Price', 'Source']]
+        last_df = search_results.sort_values(by=['Price'],ascending=False).reset_index()
+        last_df = last_df[['Post_Title','Price','Source']]
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('expand_frame_repr', False)
         print(last_df.head(10))
+            
+
+    
+
+
 
         
 def create_master(df1, df2, df3, df4, df5):
@@ -174,7 +177,7 @@ def create_master(df1, df2, df3, df4, df5):
     
     df_a = df4
     df4 = df_a[['Post URL', 'Post Title', 'Price', 'Location']]
-    df4['Source'] = 'Etsy'
+    df4['Source'] = 'AptDeco'
     df4.columns=df.columns
     
     df_i= df5
@@ -183,72 +186,40 @@ def create_master(df1, df2, df3, df4, df5):
     
     df = pd.concat([df1, df2, df3, df4, df5], axis=0)
     
+    
     return df
     
-# Fetches and returns nearby shops from YellowPages  
 def shops():
     print('NEAREST SHOPS'.center(50, '-'))
     location = input("Enter Location: ")
-    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
-    if is_cached != 'y':
         # YELLOWPAGES
-        yellowpages_base_url = "https://www.yellowpages.com/search?search_terms=Furniture&geo_location_terms="
-        df_yellowpages = yp.get_yellowpages_search_results(yellowpages_base_url, location)
-        if df_yellowpages.empty:
-            print("No nearby movers!")
-        else:
-            print(tabulate(df_yellowpages, headers = 'keys', tablefmt = 'simple', showindex=False))
-            mapvi.map_visualization(df_yellowpages)
+    yellowpages_base_url = "https://www.yellowpages.com/search?search_terms=Furniture&geo_location_terms="
+    df_yellowpages = yp.get_yellowpages_search_results(yellowpages_base_url, location)
+    if df_yellowpages.empty:
+        print("No nearby shops!")
     else:
-        df_yellowpages = cached.get_data_yellowpages()
-        columns = ('Store URL', 'Name', 'Phone', 'Street_Address', 'Locality', 'Business_years')
-        search_results = pd.DataFrame(columns=columns)
-        for index, row in df_yellowpages.iterrows():
-            if re.search(location, row['Locality']) != None:
-                search_results.loc[len(search_results)] = row
-        if search_results.empty:
-            print("No nearby shops!")
-        else:
-            mapvi.map_visualization(search_results)
-    # redirect to map
+        df_yellowpages['Location'] = df_yellowpages['Street_Address'] + "," + df_yellowpages['Locality']
+        mapvi.map_visualization(df_yellowpages)
     
-# Fetches movers from UHaul     
+    
+    
 def movers():
     print('NEAREST MOVERS'.center(50, '-'))
     zipcode = input('Enter Zipcode: ')
-    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
-    if is_cached != 'y':
-        # UHAUL
-        uhaul_base_url = "https://www.uhaul.com/Locations/"
-        df_uhaul = uh.get_uhaul_search_results(uhaul_base_url, zipcode)
-        if df_uhaul.empty:
-            print("No nearby movers!")
-        else:
-            print(tabulate(df_uhaul, headers = 'keys', tablefmt = 'simple', showindex=False))
+    uhaul_base_url = "https://www.uhaul.com/Locations/"
+    df_uhaul = uh.get_uhaul_search_results(uhaul_base_url, zipcode)
+    if df_uhaul.empty:
+        print("No nearby movers!")
     else:
-        df_uhaul = cached.get_data_uhaul()
-        columns = ('Store URL', 'Name', 'Location', 'Contact No', 'Operating Hours')
-        search_results = pd.DataFrame(columns=columns)
-        for index, row in df_uhaul.iterrows():
-            if re.search(zipcode, row['Location']) != None:
-                search_results.loc[len(search_results)] = row
-        if search_results.empty:
-            print("No nearby movers!")
-        else:
-            print(tabulate(search_results, headers = 'keys', tablefmt = 'simple', showindex=False))
+        print(df_uhaul)
+        print("The results are stored in Uhaul_Results.csv")
+        df_uhaul.to_csv("Uhaul_Results.csv")
     
-# Fetches articles from RealSimple
 def articles():
     print('ARTICLES'.center(50, '-'))
-    is_cached = input("Do you want to use cached date? This will not run BeautifulSoup code for new data (y/n)").lower().strip()
-    if is_cached != 'y':
-        # REALSIMPLE
-        realsimple_base_url = "https://www.realsimple.com/home-organizing/decorating"
-        df_realsimple = real.get_realsimple_search_results(realsimple_base_url)
-    else:
-        df_realsimple = cached.get_data_realsimple()
+    realsimple_base_url = "https://www.realsimple.com/home-organizing/decorating"
+    df_realsimple = real.get_realsimple_search_results(realsimple_base_url)
     print(df_realsimple)
-
 
 # MAIN MENU
 print("INTRO".center(50, '-'))

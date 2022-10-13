@@ -65,7 +65,7 @@ def get_aptdeco_search_results(base_url):
     df = pd.DataFrame(products_info, columns=columns)
    
 #   for page in range(2,pages+1): # - if you want to scrape all pages
-    for page in range(2,4):
+    for page in range(2,3):
         url = base_url + str(page)
 #       print("Scrape Page: " + str(page))
         page = requests.get(url)
@@ -110,3 +110,7 @@ if __name__ == '__main__':
     aptdeco_base_url = "https://www.aptdeco.com/catalog/furniture?region=Northeast+%28NY%2C+NJ%2C+CT%2C+PA%2C+DE%29&page="
     data = get_aptdeco_search_results(aptdeco_base_url)
     print(data)
+
+    
+
+

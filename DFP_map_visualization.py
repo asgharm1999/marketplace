@@ -16,9 +16,7 @@ geolocator = Nominatim(user_agent="example app")
 
 # Cleans the data from YellowPages
 def clean_data(data):
-    data['full_address'] = data['Street_Address']+ ', ' +data['Locality']
-    data['full_address'] = [x[:-6] for x in data['full_address']]
-    data["loc"] = data["full_address"].apply(geolocator.geocode)
+    data["loc"] = data["Location"].apply(geolocator.geocode, timeout =10000)
     data["point"] = data["loc"].apply(lambda loc: tuple(loc.point) if loc else None)
     data = data[data['point'] != None]
     data[['lat', 'lon', 'altitude']] = pd.DataFrame(data['point'].to_list(), index=data.index)

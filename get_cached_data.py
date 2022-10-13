@@ -140,7 +140,7 @@ def get_data_ikea():
     for file in files_list:
         if (datetime.strptime(max[14:-5], '%m_%d_%y %H%M%S') < datetime.strptime(file[14:-5], '%m_%d_%y %H%M%S')):
             max = file
-    df = pd.read_csv(max)
+    df = pd.read_csv(max, encoding = 'unicode_escape')
     return df
     
 if __name__ == '__main__':

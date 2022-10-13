@@ -52,3 +52,5 @@ def get_dania_search_results():
     timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     df1 = df1[['url','color','size','title','id','description','price','currency','product_type','images_urls','additional']]
     df1.to_csv(f'Dania Results ({timestamp}).csv', index=False)
+
+    return df1

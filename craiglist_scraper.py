@@ -41,7 +41,7 @@ def get_craigslist_search_results(base_url):
     This code only scraps the first 2 pages. If you want to scrap all pages you can comment line 43 and instead run line 44.
     This will take a long time.
     """
-    for i in range(0, 2):
+    for i in range(0, 1):
     # for i in total_pages:
         
         params = {
@@ -87,3 +87,38 @@ if __name__ == '__main__':
     craigslist_base_url = "https://pittsburgh.craigslist.org/search/fua"
     data = get_craigslist_search_results(craigslist_base_url)
     print(data)
+
+# furniture_elems = results.find_all('li', class_="result-row")
+# for furniture_elem in furniture_elems:
+#     print(furniture_elem.text)
+#     url = furniture_elem.find('a', class_="result-image gallery")['href']
+
+# changed to process 5 pages instead of total_pages
+
+    
+#     print(price_elem.text.strip())
+#     print(location_elem)
+#     print(title_elem)
+#     print(url_elem)
+#     print(price_elem.text.strip())
+#     print()
+
+
+# FURNITURE_URL = 'https://pittsburgh.craigslist.org/fuo/d/murrysville-lift-recliner/7534553122.html'
+# furniture_page = requests.get(FURNITURE_URL)
+# furniture_soup = BeautifulSoup(furniture_page.content, 'html.parser')
+
+
+# attributes = furniture_soup.find_all('p', class_='attrgroup')
+
+
+# for attribute in attributes:
+#     spans = attribute.find_all('span')
+#     for span in spans:
+#         text = span.text.strip()
+#         print(text)
+
+
+# posting_body = furniture_soup.find('section', {"id":"postingbody"})
+# print(posting_body.text)
+
